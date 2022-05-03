@@ -1,0 +1,4 @@
+thompcoutils
+selenium
+beautifulsoup4
+openpyxl

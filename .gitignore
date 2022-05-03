@@ -1,0 +1,8 @@
+~*
+.idea
+__pycache__
+debug
+brevard_data.xlsx
+chromedriver.exe
+config.ini
+logging.ini
