@@ -18,6 +18,8 @@ class SheetHandler:
     col += 1
     SITE_ADDRESS_COL = col
     col += 1
+    NOTES_COL = col
+    col += 1
 
     def __init__(self, file_name):
         """
@@ -35,6 +37,7 @@ class SheetHandler:
             ws.cell(row=SheetHandler.HEADING_ROW, column=SheetHandler.MAILING_ADDRESS_COL).value = \
                 'Mailing Address'
             ws.cell(row=SheetHandler.HEADING_ROW, column=SheetHandler.SITE_ADDRESS_COL).value = 'Site Address'
+            ws.cell(row=SheetHandler.HEADING_ROW, column=SheetHandler.NOTES_COL).value = 'Notes'
             ws.cell(row=SheetHandler.HEADING_ROW + 1, column=SheetHandler.NUM_COL).value = '=1'
             for x in range(2, 20):
                 ws.cell(row=x+1, column=SheetHandler.NUM_COL).value = \
@@ -58,10 +61,12 @@ class SheetHandler:
                     name_cell = sheet.cell(row=row, column=SheetHandler.OWNER_COL)
                     mailing_address_cell = sheet.cell(row=row, column=SheetHandler.MAILING_ADDRESS_COL)
                     site_address_cell = sheet.cell(row=row, column=SheetHandler.SITE_ADDRESS_COL)
+                    notes_cell = sheet.cell(row=row, column=SheetHandler.NOTES_COL)
                     self.values.append(SiteData(account_cell.value,
                                                 name_cell.value,
                                                 mailing_address_cell.value,
-                                                site_address_cell.value))
+                                                site_address_cell.value,
+                                                notes_cell.value))
                     row += 1
         return self.values
 

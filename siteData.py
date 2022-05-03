@@ -7,28 +7,33 @@ class SiteData:
     """
     Class to hold site data.
     """
-    def __init__(self, account: int, owner: str, mailing_address: str, site_address: str):
+    def __init__(self, account: int, owner: str, mailing_address: str, site_address: str, notes=''):
         """
         Initialize the SiteData object.
         param account: The account number.
         param owner: The owner name.
         param mailing_address: The mailing address.
         param site_address: The site address of the property.
+        param notes: The notes for the property.  Note that this is only available from the spreadsheet
         """
         self.account = account
         self.owner = owner
         self.mailing_address = mailing_address
         self.site_address = site_address
+        self.notes = notes
 
     def __str__(self):
         """
         Return a string representation of the SiteData object.
         return: A string representation of the SiteData object.
         """
-        return 'Account:{};Owner:{};Mailing Address:{};Site Address:{}'.format(self.account,
-                                                                               self.owner,
-                                                                               self.mailing_address,
-                                                                               self.site_address)
+        rtn = 'Account:{};Owner:{};Mailing Address:{};Site Address:{}'.format(self.account,\
+                                                                              self.owner,
+                                                                              self.mailing_address,
+                                                                              self.site_address)
+        if self.notes:
+            rtn += ';Notes:{}'.format(self.notes)
+        return rtn
 
     def differences(self, other: Optional["SiteData"], first_name='first', second_name='second'):
         """
@@ -69,11 +74,7 @@ class SiteData:
                 logger.debug(message)
                 rtn += message + "\n"
             if rtn != '':
-                rtn = 'Site Data Differences:\n' + rtn
-        else:
-            rtn = 'Account numbers are different:\n{}:{}\n{}:{}'.format(first_name,
-                                                                        self.account,
-                                                                        second_name,
-                                                                        other.account)
-            logger.debug(rtn)
+                notes = self.notes if self.notes else other.notes
+                rtn = 'Site Data Differences for account {} ({}):\n'.format(self.account, notes) + rtn
+        logger.debug(rtn)
         return rtn

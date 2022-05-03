@@ -1,8 +1,6 @@
-from typing import Optional
-
+from configHandler import ConfigHandler
 from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
-from thompcoutils.config_utils import ConfigManager
 from bs4 import BeautifulSoup
 from os.path import exists
 from chromedriver import get_driver
@@ -19,12 +17,12 @@ class SoupHandler:
     """
     URL = 'https://www.bcpao.us/propertysearch/#/account/{}'
 
-    def __init__(self, config_mgr: ConfigManager):
+    def __init__(self, config_handler: ConfigHandler):
         """
         Initialize the class
         param config_mgr: ConfigManager that holds the configuration from the config file
         """
-        self.config_mgr = config_mgr
+        self.config_mgr = config_handler
         self.values = None
 
     def download_soup(self, url: str):
@@ -42,7 +40,7 @@ class SoupHandler:
         options.add_argument('--disable-gpu')
         driver = webdriver.Chrome(options=options)
         driver.get(url)
-        time.sleep(self.config_mgr.page_delay)
+        time.sleep(self.config_mgr.web_page_delay)
         page = driver.page_source
         driver.quit()
         return BeautifulSoup(page, 'html.parser')

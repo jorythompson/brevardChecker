@@ -51,7 +51,6 @@ def run(config_handler: ConfigHandler):
             changes = 'changes have been updated in {}'.format(config_handler.spreadsheet_file_name)
         else:
             changes = 'changes will not be updated in {}'.format(config_handler.spreadsheet_file_name)
-        logger.debug(changes)
         if brevard_checker.email_handler.send_messages:
             logger.info('Sending email')
             brevard_checker.email_handler.send_email(
@@ -59,6 +58,8 @@ def run(config_handler: ConfigHandler):
                 message=diff_text + '\n' + changes)
         else:
             logger.info('Not sending email')
+        logger.warning(diff_text)
+        logger.warning(changes)
     else:
         logger.info('No changes found')
 
