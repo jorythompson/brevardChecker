@@ -25,20 +25,42 @@ class BrevardAccountChecker:
 
     def validate(self):
         return_message = ''
+        return_accounts = []
         for orig in self.worksheet_handler.get_accounts():
             for new in self.soup_handler.get_accounts(self.worksheet_handler.get_accounts()):
                 differences = new.differences(orig)
-                if differences != '' and self.config_handler.spreadsheet_auto_update:
-                    self.worksheet_handler.update_account(new)
+                if differences != '':
+                    return_accounts.append(new)
+                    if self.config_handler.spreadsheet_auto_update:
+                        self.worksheet_handler.update_account(new)
                 return_message += differences
-        return return_message
+        return return_message, return_accounts
 
 
-def run(config_mgr):
+def run(config_handler: ConfigHandler):
     logger = get_logger()
     logger.debug('Starting run')
-    brevard_checker = BrevardAccountChecker(config_mgr)
-    results = brevard_checker.validate()
+    brevard_checker = BrevardAccountChecker(config_handler)
+    diff_text, diff_site_data = brevard_checker.validate()
+    if diff_text != '':
+        if len(diff_site_data) > 1:
+            properties = 'properties'
+        else:
+            properties = 'property'
+        if config_handler.spreadsheet_auto_update:
+            changes = 'changes have been updated in {}'.format(config_handler.spreadsheet_file_name)
+        else:
+            changes = 'changes will not be updated in {}'.format(config_handler.spreadsheet_file_name)
+        logger.debug(changes)
+        if brevard_checker.email_handler.send_messages:
+            logger.info('Sending email')
+            brevard_checker.email_handler.send_email(
+                subject='changes in your {} on the Brevard Property Appraiser web site'.format(properties),
+                message=diff_text + '\n' + changes)
+        else:
+            logger.info('Not sending email')
+    else:
+        logger.info('No changes found')
 
 
 if __name__ == '__main__':
