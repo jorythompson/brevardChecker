@@ -37,7 +37,8 @@ This is to prevent the script from capturing the data prematurely.
 ### [debug]
 #### debug
 boolean: Indicates the downloaded soap json should be used if it exists, or downloaded and used. 
-**NOTE: IF THIS IS TRUE, THE DATA WILL NOT BE CURRENT!!!!** 
+
+***NOTE: IF THIS IS SET TO TRUE, THE DATA WILL NOT BE CURRENT!!!!*** 
 #### debug folder
 string: The folder where the downloaded json soam files from the website are stored (one for each property) if debug is set to True.
 ### [spreadsheet]
@@ -108,7 +109,8 @@ The spreadsheet has the following format:
 | 2   |
 | 3   |
 
-Fill in the unique Brevard County account number on each row in the "Account" column. 
+Fill in the unique Brevard County account number on each row in the "Account" column.
+***NOTE: blank cells in the "Account" column will cause the script to stop processing***
 
 The "Notes" column is for you to add any notes for a particular property.
 It is only used for reporting.

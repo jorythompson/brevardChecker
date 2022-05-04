@@ -41,40 +41,40 @@ class SiteData:
         param other: The other SiteData object.
         param first_name: The name of the first object (for display).
         param second_name: The name of the second object (for display).
-        return: A string that represents the differences between the two SiteData objects.
+        return: True/False if the differences are not empty strings and a string that represents the differences between the two SiteData objects.
         """
         logger = get_logger()
-        rtn = ''
+        dif_string = ''
+        substantial_differences = False
         if self.account == other.account:
-            if self.site_address != other.site_address and \
-                    self.site_address != '' and self.site_address is not None and \
-                    other.site_address != '' and other.site_address is not None:
+            if self.site_address != other.site_address:
+                if self.site_address and other.site_address:
+                    substantial_differences = True
                 message = 'Site Addresses are different:\n{}:{}\n{}:{}'.format(first_name,
                                                                                self.site_address,
                                                                                second_name,
                                                                                other.site_address)
                 logger.debug(message)
-                rtn += message + "\n"
-            if self.mailing_address != other.mailing_address and \
-                    self.mailing_address != '' and self.mailing_address is not None and \
-                    other.mailing_address != '' and other.mailing_address is not None:
+                dif_string += message + "\n"
+            if self.mailing_address != other.mailing_address:
+                if self.mailing_address and other.mailing_address:
+                    substantial_differences = True
                 message = 'Mailing Addresses are different:\n{}:{}\n{}:{}'.format(first_name,
                                                                                   self.mailing_address,
                                                                                   second_name,
                                                                                   other.mailing_address)
                 logger.debug(message)
-                rtn += message + "\n"
-            if self.owner != other.owner and \
-                    self.owner != '' and self.owner is not None and \
-                    other.owner != '' and other.owner is not None:
+                dif_string += message + "\n"
+            if self.owner != other.owner:
+                if self.owner and other.owner:
+                    substantial_differences = True
                 message = 'Owners are different:\n{}:{}\n{}:{}'.format(first_name,
                                                                        self.owner,
                                                                        second_name,
                                                                        other.owner)
                 logger.debug(message)
-                rtn += message + "\n"
-            if rtn != '':
+                dif_string += message + "\n"
+            if dif_string != '':
                 notes = self.notes if self.notes else other.notes
-                rtn = 'Site Data Differences for account {} ({}):\n'.format(self.account, notes) + rtn
-        logger.debug(rtn)
-        return rtn
+                dif_string = 'Site Data Differences for account {} ({}):\n'.format(self.account, notes) + dif_string
+        return substantial_differences, dif_string

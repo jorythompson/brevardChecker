@@ -28,9 +28,10 @@ class BrevardAccountChecker:
         return_accounts = []
         for orig in self.worksheet_handler.get_accounts():
             for new in self.soup_handler.get_accounts(self.worksheet_handler.get_accounts()):
-                differences = new.differences(orig)
-                if differences != '':
+                substantial_differences, differences = new.differences(orig)
+                if substantial_differences:
                     return_accounts.append(new)
+                if differences != '':
                     if self.config_handler.spreadsheet_auto_update:
                         self.worksheet_handler.update_account(new)
                 return_message += differences
@@ -42,7 +43,7 @@ def run(config_handler: ConfigHandler):
     logger.debug('Starting run')
     brevard_checker = BrevardAccountChecker(config_handler)
     diff_text, diff_site_data = brevard_checker.validate()
-    if diff_text != '':
+    if len(diff_site_data) > 0:
         if len(diff_site_data) > 1:
             properties = 'properties'
         else:
@@ -65,7 +66,9 @@ def run(config_handler: ConfigHandler):
 
 
 if __name__ == '__main__':
-    log_config_file = 'log.cfg'
+    """
+    This is the main function that is called when the script is run from the command line
+    """
     parser = argparse.ArgumentParser()
     parser.add_argument('--config', required=True, default='config.ini',
                         help='configuration file for this app.  If it does not exist, it will be created')
