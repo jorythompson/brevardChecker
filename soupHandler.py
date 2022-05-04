@@ -23,7 +23,7 @@ class SoupHandler:
         Initialize the class
         param config_mgr: ConfigManager that holds the configuration from the config file
         """
-        chromedriver_autoinstaller.install()
+        chromedriver_autoinstaller.install(path='./chromedriver')
         self.config_mgr = config_handler
         self.values = None
 
