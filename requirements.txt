@@ -2,4 +2,3 @@ thompcoutils
 selenium
 beautifulsoup4
 openpyxl
-git+https://gist.github.com/70b4864815cf25a40525972d598563f6.git

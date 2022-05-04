@@ -3,11 +3,12 @@ from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 from os.path import exists
-from chromedriver import get_driver
+from selenium import webdriver
 import os
 import time
 from thompcoutils.log_utils import get_logger
 from siteData import SiteData
+import chromedriver_autoinstaller
 
 
 class SoupHandler:
@@ -22,6 +23,7 @@ class SoupHandler:
         Initialize the class
         param config_mgr: ConfigManager that holds the configuration from the config file
         """
+        chromedriver_autoinstaller.install()
         self.config_mgr = config_handler
         self.values = None
 
@@ -33,8 +35,6 @@ class SoupHandler:
         """
         logger = get_logger()
         logger.debug("Downloading soup from url: {}".format(url))
-        d = get_driver()
-        d.get('https://www.google.com')
         options = Options()
         options.add_argument('--headless')
         options.add_argument('--disable-gpu')
