@@ -2,3 +2,4 @@ thompcoutils
 selenium
 beautifulsoup4
 openpyxl
+pip install git+https://github.com/yeongbin-jo/python-chromedriver-autoinstaller.git
