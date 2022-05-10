@@ -14,7 +14,10 @@ This script will help you find these accounts and alert you if they are identifi
 
 # Installation
 You will need Python 3.6 installed or higher to run this app.
-
+You may need to install the rust compiler:
+```bash
+sudo apt-get install rust
+```
 ## Virtual Environment
 If you are not using a virtual environment, you can skip this step.
 ### Install the virtual environment 
@@ -69,7 +72,7 @@ The default is false.
 ### json extension
 string: The extension of the json files.  The default is .json.
 ### log config file
-string: The name of the log config file.  The default is log.conf.
+string: The name of the log config file.  The default is logging.config.
 ## [email connection]
 ### username
 string: The username for the email connection.

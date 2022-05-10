@@ -26,7 +26,7 @@ class ConfigHandler:
         self.debug = self.config_mgr.read_entry(heading, 'debug', False)
         heading = 'files'
         self.json_extension = self.config_mgr.read_entry(heading, 'json extension', 'json')
-        self.log_config_file = self.config_mgr.read_entry(heading, 'log config file', 'log.cfg')
+        self.log_config_file = self.config_mgr.read_entry(heading, 'log config file', 'logging.config')
         if create:
             self.config_mgr.write(out_file=file_name, overwrite=True, stop=True)
             print('Created config file: {}'.format(file_name))
