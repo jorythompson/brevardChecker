@@ -1,6 +1,7 @@
 #!/bin/bash
 if [ ! -d /venv ]
 then
-  source venv/bin/activate.csh
+  venv/bin/python3 brevardChecker.py --config check.cfg
+else
+  python3 brevardChecker.py --config check.cfg
 fi
-python3 brevardChecker.py --config check.cfg
