@@ -1,6 +1,6 @@
 from os.path import exists
 import openpyxl
-
+from thompcoutils.log_utils import get_logger
 from siteData import SiteData
 
 
@@ -40,7 +40,7 @@ class SheetHandler:
             ws.cell(row=SheetHandler.HEADING_ROW, column=SheetHandler.NOTES_COL).value = 'Notes'
             ws.cell(row=SheetHandler.HEADING_ROW + 1, column=SheetHandler.NUM_COL).value = '=1'
             for x in range(2, 20):
-                ws.cell(row=x+1, column=SheetHandler.NUM_COL).value = \
+                ws.cell(row=x + 1, column=SheetHandler.NUM_COL).value = \
                     '={}{}+1'.format(SheetHandler.ALPHABET[SheetHandler.NUM_COL - 1], x)
             wb.save(file_name)
             exit(0)
@@ -49,24 +49,28 @@ class SheetHandler:
             self.wb = openpyxl.load_workbook(file_name)
 
     def get_accounts(self):
+        logger = get_logger()
         if self.values is None:
             sheet = self.wb.active
             row = SheetHandler.HEADING_ROW + 1
             self.values = []
             while True:
-                account_cell = sheet.cell(row=row, column=SheetHandler.ACCOUNT_COL)
-                if account_cell.value is None:
+                account = sheet.cell(row=row, column=SheetHandler.ACCOUNT_COL).value
+                if account is None:
+                    logger.debug('End of sheet')
                     break
                 else:
-                    name_cell = sheet.cell(row=row, column=SheetHandler.OWNER_COL)
-                    mailing_address_cell = sheet.cell(row=row, column=SheetHandler.MAILING_ADDRESS_COL)
-                    site_address_cell = sheet.cell(row=row, column=SheetHandler.SITE_ADDRESS_COL)
-                    notes_cell = sheet.cell(row=row, column=SheetHandler.NOTES_COL)
-                    self.values.append(SiteData(account_cell.value,
-                                                name_cell.value,
-                                                mailing_address_cell.value,
-                                                site_address_cell.value,
-                                                notes_cell.value))
+                    name = sheet.cell(row=row, column=SheetHandler.OWNER_COL).value
+                    mailing_address = sheet.cell(row=row, column=SheetHandler.MAILING_ADDRESS_COL).value
+                    site_address = sheet.cell(row=row, column=SheetHandler.SITE_ADDRESS_COL).value
+                    notes = sheet.cell(row=row, column=SheetHandler.NOTES_COL).value
+                    logger.debug('Spreadsheet account:{}, site_address:{}, notes:{}'.
+                                 format(account, site_address, notes))
+                    self.values.append(SiteData(account,
+                                                name,
+                                                mailing_address,
+                                                site_address,
+                                                notes))
                     row += 1
         return self.values
 

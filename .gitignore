@@ -5,3 +5,6 @@ debug
 brevard_data.xlsx
 chromedriver.exe
 *.ini
+*.xlsx
+*.xls
+chromedriver

@@ -24,9 +24,11 @@ class BrevardAccountChecker:
         self.updated_accounts = self.soup_handler.get_accounts(self.worksheet_handler.get_accounts())
 
     def validate(self):
+        logger = get_logger()
         return_message = ''
         return_accounts = []
         for orig in self.worksheet_handler.get_accounts():
+            logger.debug(f'Checking account {orig.account}')
             for new in self.soup_handler.get_accounts(self.worksheet_handler.get_accounts()):
                 substantial_differences, differences = new.differences(orig)
                 if substantial_differences:

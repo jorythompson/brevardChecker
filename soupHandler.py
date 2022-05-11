@@ -1,5 +1,4 @@
 from configHandler import ConfigHandler
-from selenium import webdriver
 from selenium.webdriver.chrome.options import Options
 from bs4 import BeautifulSoup
 from os.path import exists
@@ -23,7 +22,10 @@ class SoupHandler:
         Initialize the class
         param config_mgr: ConfigManager that holds the configuration from the config file
         """
-        chromedriver_autoinstaller.install(path='./chromedriver')
+        try:
+            chromedriver_autoinstaller.install(path='./chromedriver')
+        except RuntimeError:
+            print('Could not install chromedriver, assuming it is in the path')
         self.config_mgr = config_handler
         self.values = None
 
